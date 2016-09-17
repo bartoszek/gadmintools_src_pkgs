@@ -1,0 +1,16 @@
+
+### Redirect the whole network to use SQUID Proxy ###
+
+iptables -A PREROUTING –i eth1 –p tcp –m tcp –dport 80 \
+             –j DNAT –to-destination 192.168.0.100:3128
+
+iptables -A PREROUTING –i eth1 –p tcp –m tcp –dport 80 \
+             –j REDIRECT –to-ports 3128
+
+iptables -A POSTROUTING –s 192.168.0.0/24 –o eth0 \
+             –j MASQUERADE
+
+iptables -t nat -A POSTROUTING -s 192.168.0.0/24 –o eth0 \
+             -j MASQUERADE
+
+
